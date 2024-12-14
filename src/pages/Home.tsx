@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Cards } from "../components/Cards/Cards";
 import { COLORS } from "../constants/colors";
 
-export const Home = () => {
+export const Home:React.FC = () => {
   return (
     <>
       <Container>

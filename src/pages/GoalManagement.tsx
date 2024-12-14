@@ -3,7 +3,7 @@ import { GoalCard } from '../components/GoalManagement/GoalCard';
 import { useGoals } from '../hooks/useGoals';
 import styled from 'styled-components';
 
-export const GoalManagement = () => {
+export const GoalManagement:React.FC = () => {
   const { goals, newGoal, setNewGoal, addGoal, deleteGoal, completeGoal } = useGoals();
 
   return (

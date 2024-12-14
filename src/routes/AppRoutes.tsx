@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RoutePaths from './RoutePaths'; // 라우트 경로 상수
 

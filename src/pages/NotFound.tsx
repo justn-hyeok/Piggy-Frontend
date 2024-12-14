@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const NotFound = () => {
+export const NotFound:React.FC = () => {
   return (
     <>
       <Container>

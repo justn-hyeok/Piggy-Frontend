@@ -19,7 +19,7 @@ const CARD_DATA: CardType[] = [
   },
 ];
 
-export const Cards = () => (
+export const Cards:React.FC = () => (
   <CardContainer>
     {CARD_DATA.map((card) => (
       <CardComponent
