@@ -1,9 +1,9 @@
 import React from "react";
+import { Kid1 } from "./Kid1";
+import { Kid2 } from "./Kid2";
 
-const Kid = () => {
+export const Kid = () => {
   return (
   <div>Kid Page</div>
 );
 };
-
-export default Kid;

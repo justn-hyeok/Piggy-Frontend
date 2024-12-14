@@ -1,28 +1,25 @@
 import React from "react";
 import styled from "styled-components";
+import { THEME } from "../../constants/theme";
+import { CardProps } from "./Card.types";
 
-type CardProps = {
-  title: string;
-  text: string;
-  icon: string;
-  learnMoreText: string;
-};
+export const CardComponent: React.FC<CardProps> = ({
+  title,
+  text,
+  icon,
+  learnMoreText,
+}) => (
+  <Card>
+    <CardContent>
+      <CardTitle>
+        {icon} {title}
+      </CardTitle>
+      <CardText>{text}</CardText>
+    </CardContent>
+    <LearnMore>{learnMoreText}</LearnMore>
+  </Card>
+);
 
-const THEME = {
-  colors: {
-    background: '#27272a',
-    text: '#ffffff',
-    accent: '#fda4af'
-  },
-  sizes: {
-    cardWidth: '28rem',
-    cardHeight: '11rem'
-  },
-  spacing: {
-    padding: '1.5rem',
-    gap: '0.5rem'
-  }
-} as const;
 
 const Card = styled.div`
   width: ${THEME.sizes.cardWidth};
@@ -33,7 +30,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  
+
   @media (max-width: 768px) {
     width: 90%;
     max-width: ${THEME.sizes.cardWidth};
@@ -77,22 +74,3 @@ const LearnMore = styled.button`
     text-decoration: underline;
   }
 `;
-
-const CardComponent: React.FC<CardProps> = ({
-  title,
-  text,
-  icon,
-  learnMoreText
-}) => (
-  <Card>
-    <CardContent>
-      <CardTitle>
-        {icon} {title}
-      </CardTitle>
-      <CardText>{text}</CardText>
-    </CardContent>
-    <LearnMore>{learnMoreText}</LearnMore>
-  </Card>
-);
-
-export default CardComponent;

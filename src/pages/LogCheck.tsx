@@ -1,9 +1,7 @@
 import React from "react";
 
-const Log = () => {
+export const LogCheck = () => {
   return (
-  <div>로그확인</div>
-);
+    <div>로그확인</div>
+  );
 };
-
-export default Log;

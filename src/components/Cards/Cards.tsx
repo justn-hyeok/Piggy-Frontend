@@ -1,13 +1,6 @@
 import styled from "styled-components";
-import CardComponent from "./CardComponent";
-
-type CardType = {
-  id: string;
-  title: string;
-  text: string;
-  icon: string;
-  learnMoreText: string;
-};
+import { CardComponent } from "./CardComponent";
+import { CardType } from "./Card.types"; 
 
 const CARD_DATA: CardType[] = [
   {
@@ -26,6 +19,17 @@ const CARD_DATA: CardType[] = [
   },
 ];
 
+export const Cards = () => (
+  <CardContainer>
+    {CARD_DATA.map((card) => (
+      <CardComponent
+        key={card.id}
+        {...card}
+      />
+    ))}
+  </CardContainer>
+);
+
 const CardContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -40,16 +44,3 @@ const CardContainer = styled.div`
     gap: 1rem;
   }
 `;
-
-const Cards = () => (
-  <CardContainer>
-    {CARD_DATA.map((card) => (
-      <CardComponent
-        key={card.id}
-        {...card}
-      />
-    ))}
-  </CardContainer>
-);
-
-export default Cards;

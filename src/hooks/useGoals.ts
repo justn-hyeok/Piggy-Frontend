@@ -1,43 +1,50 @@
+// hooks/useGoals.ts
 import { useState } from 'react';
-import { dummyGoals } from '../utils/dummyData';
+import { Goal, NewGoal } from '../types/goals';
+import { GOALS_CONSTANTS, GOALS_MESSAGES } from '../constants/goals';
+import { validateNewGoal } from '../utils/goalValidation';
 
 export const useGoals = () => {
-  const [goals, setGoals] = useState(dummyGoals);
-  const [newGoal, setNewGoal] = useState({ name: '', description: '', amount: 0 });
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [newGoal, setNewGoal] = useState<NewGoal>(GOALS_CONSTANTS.INITIAL_GOAL);
+  const [error, setError] = useState<string | null>(null);
 
-  // 목표 추가
   const addGoal = () => {
-    if (goals.length >= 1) {
-      alert('목표는 한 개만 추가할 수 있습니다!');
-      return;
-    }
-
-    if (newGoal.name && newGoal.amount > 0) {
-      setGoals([{ id: Date.now(), ...newGoal, saved: 0 }]);
-      setNewGoal({ name: '', description: '', amount: 0 });
-    } else {
-      alert('모든 필드를 입력해야 합니다!');
+    try {
+      if (goals.length >= GOALS_CONSTANTS.MAX_GOALS) {
+        throw new Error(GOALS_MESSAGES.MAX_GOALS);
+      }
+      validateNewGoal(newGoal);
+      
+      setGoals([{ 
+        id: Date.now(),
+        ...newGoal,
+        saved: 0 
+      }]);
+      setNewGoal(GOALS_CONSTANTS.INITIAL_GOAL);
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '알 수 없는 에러가 발생했습니다.');
     }
   };
 
-  // 목표 삭제
   const deleteGoal = (id: number, name: string) => {
-    alert(`"${name}" 목표를 취소했습니다!`);
-    setGoals((prevGoals) => prevGoals.filter((goal) => goal.id !== id));
+    setGoals(prev => prev.filter(goal => goal.id !== id));
+    alert(GOALS_MESSAGES.GOAL_DELETED(name));
   };
 
-  // 목표 완료
   const completeGoal = (name: string) => {
-    alert(`"${name}" 목표를 완료했습니다!`);
     setGoals([]);
+    alert(GOALS_MESSAGES.GOAL_COMPLETED(name));
   };
 
   return {
     goals,
     newGoal,
+    error,
     setNewGoal,
     addGoal,
     deleteGoal,
     completeGoal,
   };
-}; // 푸히히 푸히 푸히히 푸히 푸히히 푸히 푸히 푸힢 ㅁㄴ;ㅣㅏㅁㄴㅇ;ㅣㅏㅓㅁㄴㅇㅌ
+};
