@@ -1,5 +1,13 @@
 import styled from 'styled-components';
 
+export const Footer = () => {
+    return (
+        <Container>
+            let fuck = 6974;
+        </Container>
+    );
+};
+
 const Container = styled.footer`
     display: flex;
     justify-content: center;
@@ -9,13 +17,3 @@ const Container = styled.footer`
     color: #ffffff;
     text-align: center; 
 `;
-
-const Footer = () => {
-    return (
-        <Container>
-            let fuck = 6974;
-        </Container>
-    );
-};
-
-export default Footer;
