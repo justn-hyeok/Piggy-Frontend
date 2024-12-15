@@ -1,13 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { THEME } from "../../constants/theme";
-import { CardProps } from "./Card.types";
+
+type CardProps = {
+  title: string;
+  text: string;
+  icon: string;
+  learnMoreText: string;
+  onLearnMore: () => void; // Learn More 클릭 시 호출될 함수
+};
 
 export const CardComponent: React.FC<CardProps> = ({
   title,
   text,
   icon,
   learnMoreText,
+  onLearnMore,
 }) => (
   <Card>
     <CardContent>
@@ -16,10 +24,9 @@ export const CardComponent: React.FC<CardProps> = ({
       </CardTitle>
       <CardText>{text}</CardText>
     </CardContent>
-    <LearnMore>{learnMoreText}</LearnMore>
+    <LearnMore onClick={onLearnMore}>{learnMoreText}</LearnMore>
   </Card>
 );
-
 
 const Card = styled.div`
   width: ${THEME.sizes.cardWidth};
@@ -30,6 +37,13 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  border: 2px solid transparent; /* 기본 테두리 색상은 투명 */
+  transition: all 0.3s ease; /* 부드러운 효과 추가 */
+
+  &:hover {
+    border-color: ${THEME.colors.accent}; /* 호버 시 테두리 색상 변경 */
+    transform: scale(1.02); /* 살짝 확대되는 효과 */
+  }
 
   @media (max-width: 768px) {
     width: 90%;
@@ -59,7 +73,7 @@ const CardText = styled.p`
 `;
 
 const LearnMore = styled.button`
-  color: ${THEME.colors.accent};
+  color: ${THEME.colors.text};
   font-size: 1.25rem;
   font-weight: 500;
   background: none;
@@ -69,8 +83,10 @@ const LearnMore = styled.button`
   position: absolute;
   bottom: ${THEME.spacing.padding};
   right: ${THEME.spacing.padding};
+  transition: color 0.3s ease;
 
   &:hover {
+    color: ${THEME.colors.accent};
     text-decoration: underline;
   }
 `;

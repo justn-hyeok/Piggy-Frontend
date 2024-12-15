@@ -1,21 +1,22 @@
+import React from "react";
 import styled from "styled-components";
 import { Cards } from "../components/Cards/Cards";
-import { COLORS } from "../constants/colors";
+import { THEME } from "../constants/theme";
 
-export const Home:React.FC = () => {
+export const Home: React.FC = () => {
   return (
     <>
       <Container>
         <TextLine>
-          <Text color={COLORS.primary}>WELCOME </Text>
-          <Text color={COLORS.secondary}>to </Text>
-          <Text color={COLORS.primary}>PIGGY!</Text>
+          <Text color={THEME.colors.accent}>WELCOME </Text>
+          <Text color={THEME.colors.text}>to </Text>
+          <Text color={THEME.colors.accent}>PIGGY!</Text>
         </TextLine>
         <TextLine>
-          <Text color={COLORS.secondary} bold>
+          <Text color={THEME.colors.text} bold>
             즐겁게 배우는{" "}
           </Text>
-          <Text color={COLORS.primary} bold>
+          <Text color={THEME.colors.accent} bold>
             첫 저축 이야기
           </Text>
         </TextLine>
@@ -48,7 +49,7 @@ const Text = styled.span<{ color: string; bold?: boolean }>`
 `;
 
 const WelcomeText = styled.div`
-  color: ${COLORS.textPrimary};
+  color: ${THEME.colors.text};
   font-size: 1.25rem;
   font-family: "Pretendard";
   font-weight: 500;

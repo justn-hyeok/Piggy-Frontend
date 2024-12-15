@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Footer = () => {
     return (
         <Container>
-            let fuck = 6974;
+            여기뭐넣지
         </Container>
     );
 };

@@ -2,8 +2,9 @@ import React from 'react';
 import { GoalCard } from '../components/GoalManagement/GoalCard';
 import { useGoals } from '../hooks/useGoals';
 import styled from 'styled-components';
+import { THEME } from '../constants/theme';
 
-export const GoalManagement:React.FC = () => {
+export const GoalManagement: React.FC = () => {
   const { goals, newGoal, setNewGoal, addGoal, deleteGoal, completeGoal } = useGoals();
 
   return (
@@ -34,23 +35,26 @@ export const GoalManagement:React.FC = () => {
       </InputWrapper>
 
       {/* 목표 카드 표시 */}
-      {goals.length > 0 && (
+      {goals.length > 0 ? (
         <GoalCard
           {...goals[0]} // 첫 번째 목표만 렌더링
           onDelete={() => deleteGoal(goals[0].id, goals[0].name)}
           onComplete={() => completeGoal(goals[0].name)}
         />
+      ) : (
+        <EmptyMessage>현재 목표가 없습니다. 새 목표를 추가해보세요!</EmptyMessage>
       )}
     </Container>
   );
 };
 
+/* 스타일 정의 */
 const Container = styled.div`
   width: 100%;
   max-width: 400px; /* 가로 최대 크기 제한 */
   padding: 20px;
-  margin: 0 auto; /* 화면 중앙 정렬 */
-  background: #1e1e1e;
+  margin: 100px auto 0; /* 화면 중앙으로 내리기 */
+  background: ${THEME.colors.background}; /* 배경 색상 */
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -58,7 +62,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.h2`
-  color: white;
+  color: ${THEME.colors.text};
   font-size: 24px;
   font-weight: bold;
   text-align: center; /* 제목 중앙 정렬 */
@@ -70,14 +74,14 @@ const InputWrapper = styled.div`
   gap: 12px;
 
   input {
-    padding: 8px 10px; /* 인풋 크기 축소 */
-    font-size: 14px; /* 텍스트 크기 축소 */
-    border: 1px solid #404040;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid ${THEME.colors.accent}; /* 테두리 색상 수정 */
     border-radius: 4px;
-    background: #2c2c2c;
-    color: white;
+    background: ${THEME.colors.background};
+    color: ${THEME.colors.text};
     outline: none;
-    height: 40px; /* 높이 조정 */
+    height: 40px;
   }
 `;
 
@@ -85,13 +89,21 @@ const AddGoalButton = styled.button`
   padding: 10px 16px;
   border: none;
   border-radius: 4px;
-  background: #ECC1D7;
-  color: white;
+  background: ${THEME.colors.accent};
+  color: ${THEME.colors.text};
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
 
   &:hover {
-    background: #ECC1D7;
+    background: ${THEME.colors.text}; /* hover 효과 수정 */
+    color: ${THEME.colors.accent};
   }
+`;
+
+const EmptyMessage = styled.p`
+  color: ${THEME.colors.text};
+  font-size: 14px;
+  text-align: center;
+  margin-top: 16px;
 `;

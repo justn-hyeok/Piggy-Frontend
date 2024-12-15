@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { CardComponent } from "./CardComponent";
-import { CardType } from "./Card.types"; 
+import { CardType } from "./Card.types";
+import { useNavigate } from "react-router-dom";
 
 const CARD_DATA: CardType[] = [
   {
-    id: 'record',
+    id: 'log',
     title: "기록 확인",
     text: "자녀의 최근 저축 및 소비 활동을 한눈에 확인해보세요.",
     icon: "📊",
@@ -19,16 +20,26 @@ const CARD_DATA: CardType[] = [
   },
 ];
 
-export const Cards:React.FC = () => (
-  <CardContainer>
-    {CARD_DATA.map((card) => (
-      <CardComponent
-        key={card.id}
-        {...card}
-      />
-    ))}
-  </CardContainer>
-);
+export const Cards: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLearnMore = (id: string) => {
+    if (id === 'log') navigate('/log');
+    if (id === 'goal') navigate('/goal');
+  };
+
+  return (
+    <CardContainer>
+      {CARD_DATA.map((card) => (
+        <CardComponent
+          key={card.id}
+          {...card}
+          onLearnMore={() => handleLearnMore(card.id)}
+        />
+      ))}
+    </CardContainer>
+  );
+};
 
 const CardContainer = styled.div`
   display: flex;
