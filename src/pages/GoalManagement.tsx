@@ -51,10 +51,10 @@ export const GoalManagement: React.FC = () => {
 /* 스타일 정의 */
 const Container = styled.div`
   width: 100%;
-  max-width: 400px; /* 가로 최대 크기 제한 */
+  max-width: 400px;
   padding: 20px;
-  margin: 100px auto 0; /* 화면 중앙으로 내리기 */
-  background: ${THEME.colors.background}; /* 배경 색상 */
+  margin: 100px auto 0;
+  background: ${THEME.colors.background};
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@ const Title = styled.h2`
   color: ${THEME.colors.text};
   font-size: 24px;
   font-weight: bold;
-  text-align: center; /* 제목 중앙 정렬 */
+  text-align: center;
 `;
 
 const InputWrapper = styled.div`
@@ -76,7 +76,7 @@ const InputWrapper = styled.div`
   input {
     padding: 8px 10px;
     font-size: 14px;
-    border: 1px solid ${THEME.colors.accent}; /* 테두리 색상 수정 */
+    border: 1px solid ${THEME.colors.accent};
     border-radius: 4px;
     background: ${THEME.colors.background};
     color: ${THEME.colors.text};
@@ -96,7 +96,7 @@ const AddGoalButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: ${THEME.colors.text}; /* hover 효과 수정 */
+    background: ${THEME.colors.text};
     color: ${THEME.colors.accent};
   }
 `;
