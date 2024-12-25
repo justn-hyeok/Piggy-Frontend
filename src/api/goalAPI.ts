@@ -23,23 +23,3 @@ export const createGoal = async (goal: {
     throw error;
   }
 };
-
-export const deleteGoal = async (goalId: number) => {
-  try {
-    const response = await axiosInstance.delete(`/goal/${goalId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error deleting goal:', error);
-    throw error;
-  }
-};
-
-export const completeGoal = async (goalId: number) => {
-  try {
-    const response = await axiosInstance.patch(`/goal/${goalId}/complete`);
-    return response.data;
-  } catch (error) {
-    console.error('Error completing goal:', error);
-    throw error;
-  }
-};
