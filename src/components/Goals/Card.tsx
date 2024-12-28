@@ -8,8 +8,8 @@ interface GoalCardProps {
   description: string;
   amount: number;
   saved: number;
-  onDelete: (id: number) => void;
   onComplete: (id: number) => void;
+  onCancel: (id: number) => void;
 }
 
 export const GoalCard: React.FC<GoalCardProps> = ({
@@ -18,10 +18,11 @@ export const GoalCard: React.FC<GoalCardProps> = ({
   description,
   amount,
   saved,
-  onDelete,
   onComplete,
+  onCancel,
 }) => {
   const progress = (saved / amount) * 100;
+  const isCompleted = saved >= amount;
 
   return (
     <Card>
@@ -34,8 +35,10 @@ export const GoalCard: React.FC<GoalCardProps> = ({
         <ProgressBar progress={progress} />
       </ProgressWrapper>
       <ButtonGroup>
-        <ActionButton onClick={() => onComplete(id)}>목표 완료</ActionButton>
-        <ActionButton onClick={() => onDelete(id)}>목표 삭제</ActionButton>
+        <ActionButton onClick={() => onComplete(id)}>
+          {isCompleted ? "완료" : "목표 달성"}
+        </ActionButton>
+        <ActionButton onClick={() => onCancel(id)}>목표 취소</ActionButton>
       </ButtonGroup>
     </Card>
   );
@@ -43,20 +46,27 @@ export const GoalCard: React.FC<GoalCardProps> = ({
 
 // GoalManagement 컴포넌트
 export const GoalManagement: React.FC = () => {
-  // 초기 상태: 빈 배열
   const [goals, setGoals] = useState<
     { id: number; name: string; description: string; amount: number; saved: number }[]
   >([]);
 
-  // 목표 삭제 핸들러
-  const handleDelete = (id: number) => {
-    setGoals(goals.filter((goal) => goal.id !== id));
+  const handleCancel = (id: number) => {
+    const shouldCancel = window.confirm("목표를 진짜 취소하시겠습니까?");
+    if (shouldCancel) {
+      setGoals(goals.filter((goal) => goal.id !== id));
+    }
   };
 
-  // 목표 완료 핸들러
   const handleComplete = (id: number) => {
-    alert(`"${goals.find((goal) => goal.id === id)?.name}" 목표를 완료했습니다!`);
-    setGoals(goals.filter((goal) => goal.id !== id));
+    const goal = goals.find((g) => g.id === id);
+    if (!goal) return;
+
+    if (goal.saved >= goal.amount) {
+      alert(`"${goal.name}" 목표를 완료했습니다!`);
+      setGoals(goals.filter((g) => g.id !== id));
+    } else {
+      alert("목표 금액에 도달하지 못했습니다.");
+    }
   };
 
   return (
@@ -67,8 +77,8 @@ export const GoalManagement: React.FC = () => {
           <GoalCard
             key={goal.id}
             {...goal}
-            onDelete={handleDelete}
             onComplete={handleComplete}
+            onCancel={handleCancel}
           />
         ))
       ) : (
@@ -78,6 +88,7 @@ export const GoalManagement: React.FC = () => {
   );
 };
 
+// 스타일 컴포넌트들은 그대로 유지
 // 스타일 정의
 const Card = styled.div`
   background: #2c2c2c;

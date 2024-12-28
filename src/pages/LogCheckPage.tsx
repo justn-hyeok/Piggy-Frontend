@@ -23,7 +23,29 @@ const LogCheckPage: React.FC = () => {
         const data = await fetchLogs();
         setLogs(data);
       } catch (err) {
-        setError('로그 데이터를 불러오는 데 실패했습니다.');
+        console.error('로그 로딩 실패:', err);
+        setError('로그 데이터를 불러오는 데 실패했습니다. 더미데이터를 표시합니다.');
+        // 더미데이터 설정
+        setLogs([
+          {
+            id: 1,
+            goal_id: 1,
+            date: new Date().toISOString(),
+            coin: 50000
+          },
+          {
+            id: 2,
+            goal_id: 1,
+            date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+            coin: 30000
+          },
+          {
+            id: 3,
+            goal_id: 1,
+            date: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+            coin: 20000
+          }
+        ]);
       } finally {
         setLoading(false);
       }
@@ -33,38 +55,44 @@ const LogCheckPage: React.FC = () => {
   }, []);
 
   if (loading) return <Message>로딩 중...</Message>;
-  if (error) return <Message>{error}</Message>;
 
   return (
     <Container>
+      {error && <ErrorBanner>{error}</ErrorBanner>}
       <Title>저축 로그</Title>
-      <LogList>
-        {logs.map((log, index) => (
-          <LogItem key={log.id} isLast={index === logs.length - 1}>
-            <LogDetail>
-              <Label>ID:</Label>
-              <Value>{log.id}</Value>
-            </LogDetail>
-            <LogDetail>
-              <Label>목표 ID:</Label>
-              <Value>{log.goal_id || '없음'}</Value>
-            </LogDetail>
-            <LogDetail>
-              <Label>날짜:</Label>
-              <Value>{new Date(log.date).toLocaleString()}</Value>
-            </LogDetail>
-            <LogDetail>
-              <Label>저축 금액:</Label>
-              <Value>{log.coin}원</Value>
-            </LogDetail>
-          </LogItem>
-        ))}
-      </LogList>
+      {logs.length > 0 ? (
+        <LogList>
+          {logs.map((log, index) => (
+            <LogItem key={log.id} isLast={index === logs.length - 1}>
+              <LogDetail>
+                <Label>날짜:</Label>
+                <Value>
+                  {new Date(log.date).toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </Value>
+              </LogDetail>
+              <LogDetail>
+                <Label>목표 ID:</Label>
+                <Value>{log.goal_id || '없음'}</Value>
+              </LogDetail>
+              <LogDetail>
+                <Label>저축 금액:</Label>
+                <Value>{log.coin.toLocaleString()}원</Value>
+              </LogDetail>
+            </LogItem>
+          ))}
+        </LogList>
+      ) : (
+        <EmptyMessage>저축 기록이 없습니다.</EmptyMessage>
+      )}
     </Container>
   );
 };
-
-export default LogCheckPage;
 
 const Container = styled.div`
   max-width: 500px;
@@ -73,6 +101,7 @@ const Container = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   color: ${THEME.colors.text};
+  background: ${THEME.colors.background};
 `;
 
 const Title = styled.h1`
@@ -87,6 +116,7 @@ const LogList = styled.ul`
   padding: 0;
   display: flex;
   flex-direction: column;
+  gap: 12px;
 `;
 
 const LogItem = styled.li<{ isLast: boolean }>`
@@ -109,12 +139,12 @@ const LogDetail = styled.div`
 const Label = styled.span`
   font-weight: bold;
   color: ${THEME.colors.text};
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 `;
 
 const Value = styled.span`
   color: ${THEME.colors.text};
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 `;
 
 const Message = styled.div`
@@ -123,3 +153,22 @@ const Message = styled.div`
   margin: 2rem 0;
   font-size: 1rem;
 `;
+
+const ErrorBanner = styled.div`
+  background: rgba(236, 193, 215, 0.1);
+  color: ${THEME.colors.accent};
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 16px;
+`;
+
+const EmptyMessage = styled.p`
+  color: ${THEME.colors.text};
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1rem;
+`;
+
+export default LogCheckPage;
