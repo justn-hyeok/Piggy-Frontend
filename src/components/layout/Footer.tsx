@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import theme from '../../constants/theme';
 
 const Footer = () => {
     return (
@@ -16,6 +17,6 @@ const Container = styled.footer`
     align-items: center;
     padding: 1.4rem;
     background-color: #000000;
-    color: #ffffff;
+    color: ${theme.colors.text};
     text-align: center; 
 `;

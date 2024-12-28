@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PiggyLogo from "../../assets/images/logo.svg";
 import Home from "../../assets/icons/home.png";
+import theme from "../../constants/theme";
 
 const Header = () => {
     return (
@@ -38,7 +39,7 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled.a`
-    color: #ffffff;
+    color: ${theme.colors.text};
     margin-left: 1rem;
     text-decoration: none;
     font-size: 1rem;

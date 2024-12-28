@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import theme from '../constants/theme';
 
 export const NotFound:React.FC = () => {
   return (
@@ -28,16 +29,16 @@ const LargeText = styled.span`
 `;
 
 const FourText = styled(LargeText)`
-    color: #ECC1D7  
+    color: ${theme.colors.accent};
 `;
 
 const ZeroText = styled(LargeText)`
-    color: #ffffff;
+    color: ${theme.colors.text};
 `;
 
 const Message = styled.div`
     text-align: center;
-    color: #ffffff;
+    color: ${theme.colors.text};
     font-size: 1.875rem;
     font-weight: bold;
 `;

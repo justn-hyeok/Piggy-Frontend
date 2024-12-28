@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import THEME from "../constants/theme";
-import { fetchGoals, createGoal, deleteGoal, completeGoal } from "../api/goalAPI";
+import { fetchGoals, createGoal} from "../api/goalAPI";
 import { GoalCard } from "../components/Goals/Card";
 
 interface Goal {

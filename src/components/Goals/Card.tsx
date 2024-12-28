@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import theme from '../../constants/theme';
 
 interface GoalCardProps {
   id: number;
@@ -98,7 +99,7 @@ const ProgressWrapper = styled.div`
 const ProgressBar = styled.div<{ progress: number }>`
   width: ${(props) => props.progress}%;
   height: 100%;
-  background: #ECC1D7;
+  background: ${theme.colors.accent};
   transition: width 0.3s ease;
 `;
 
@@ -131,7 +132,7 @@ const Container = styled.div`
 `;
 
 const EmptyMessage = styled.p`
-  color: #ffffff;
+  color: ${theme.colors.text};
   text-align: center;
   margin-top: 16px;
 `;
