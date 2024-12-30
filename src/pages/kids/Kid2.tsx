@@ -1,18 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchGoals } from '../../api/goalAPI';
+
+interface GoalData {
+  id: number;
+  name: string;
+  description: string;
+  amount: number;
+  saved: number;
+}
 
 const Kid2: React.FC = () => {
+  const [goalData, setGoalData] = useState<GoalData | null>(null);
   const navigate = useNavigate();
 
-  const weeklySavedAmount = 5000;
-  const totalSavedAmount = 23123;
-  const goalAmount = 100000;
-  const remainingAmount = goalAmount - totalSavedAmount;
+  useEffect(() => {
+    const fetchGoalData = async () => {
+      try {
+        const goals = await fetchGoals();
+        if (goals.length > 0) {
+          setGoalData(goals[0]); // 첫 번째 목표 데이터를 사용
+        }
+      } catch (error) {
+        console.error('Error fetching goal data:', error);
+      }
+    };
+
+    fetchGoalData();
+  }, []);
+
+  if (!goalData) {
+    return <div>Loading...</div>;
+  }
 
   const handleNextPage = () => {
     navigate('/kids/kid1');
   };
+
+  const { saved: weeklySavedAmount = 0, amount: goalAmount = 0 } = goalData;
+  const totalSavedAmount = goalData.saved ?? 0;
+  const remainingAmount = Math.max(goalAmount - totalSavedAmount, 0);
 
   return (
     <PageContainer>
@@ -21,20 +49,20 @@ const Kid2: React.FC = () => {
           <Title>축하드려요! 🎉</Title>
           <MainContent>
             <Subtitle>
-              이번 주에 <Highlight>{weeklySavedAmount.toLocaleString()}원</Highlight> 저축했어요!
+              이번 주에 <Highlight>{(weeklySavedAmount ?? 0).toLocaleString()}원</Highlight> 저축했어요!
             </Subtitle>
             <Details>
               <DetailItem>
                 <Label>목표 금액</Label>
-                <Amount>{goalAmount.toLocaleString()}원</Amount>
+                <Amount>{(goalAmount ?? 0).toLocaleString()}원</Amount>
               </DetailItem>
               <DetailItem>
                 <Label>총 저축 금액</Label>
-                <Amount highlight>{totalSavedAmount.toLocaleString()}원</Amount>
+                <Amount highlight>{(totalSavedAmount ?? 0).toLocaleString()}원</Amount>
               </DetailItem>
               <DetailItem>
                 <Label>남은 금액</Label>
-                <Amount>{remainingAmount.toLocaleString()}원</Amount>
+                <Amount>{(remainingAmount ?? 0).toLocaleString()}원</Amount>
               </DetailItem>
             </Details>
           </MainContent>

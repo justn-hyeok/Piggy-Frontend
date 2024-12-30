@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchGoals } from '../../api/goalAPI';
+
+interface GoalData {
+  id: number;
+  name: string;
+  description: string;
+  amount: number;
+  saved: number;
+}
 
 const Kid1: React.FC = () => {
-  const goalName = "아이 학습비";
-  const savedAmount = 23123;
-  const goalAmount = 100000;
-  const percentage = Math.floor((savedAmount / goalAmount) * 100);
+  const [goalData, setGoalData] = useState<GoalData | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchGoalData = async () => {
+      try {
+        const goals = await fetchGoals();
+        if (goals.length > 0) {
+          setGoalData(goals[0]); // 첫 번째 목표 데이터를 사용
+        }
+      } catch (error) {
+        console.error('Error fetching goal data:', error);
+      }
+    };
+
+    fetchGoalData();
+  }, []);
+
+  if (!goalData) {
+    return <div>Loading...</div>;
+  }
+
+  const { name, saved = 0, amount = 0 } = goalData;
+  const percentage = amount > 0 ? Math.floor((saved / amount) * 100) : 0;
 
   const handleNextPage = () => {
     navigate('/kids/kid2');
@@ -26,15 +54,15 @@ const Kid1: React.FC = () => {
             <Details>
               <DetailItem>
                 <Label>목표</Label>
-                <Amount>{goalName}</Amount>
+                <Amount>{name}</Amount>
               </DetailItem>
               <DetailItem>
                 <Label>현재 저축액</Label>
-                <Amount highlight>{savedAmount.toLocaleString()}원</Amount>
+                <Amount highlight>{saved.toLocaleString()}원</Amount>
               </DetailItem>
               <DetailItem>
                 <Label>목표 금액</Label>
-                <Amount>{goalAmount.toLocaleString()}원</Amount>
+                <Amount>{amount.toLocaleString()}원</Amount>
               </DetailItem>
             </Details>
           </MainContent>
