@@ -4,7 +4,7 @@ import theme from '../../constants/theme';
 const Footer = () => {
     return (
         <Container>
-            여기뭐넣지
+            
         </Container>
     );
 };

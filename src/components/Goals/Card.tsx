@@ -17,7 +17,7 @@ export const GoalCard: React.FC<GoalCardProps> = ({
   name,
   description,
   amount,
-  saved,
+  saved = 0, // 기본값을 0으로 설정
   onComplete,
   onCancel,
 }) => {
@@ -28,9 +28,7 @@ export const GoalCard: React.FC<GoalCardProps> = ({
     <Card>
       <h3>{name}</h3>
       <p>{description}</p>
-      <p>
-        목표 금액: {amount.toLocaleString()}₩ / 현재 저장: {saved.toLocaleString()}₩
-      </p>
+      <p>목표 금액: {amount.toLocaleString()}₩ / 현재 저장: {saved.toLocaleString()}₩</p>
       <ProgressWrapper>
         <ProgressBar progress={progress} />
       </ProgressWrapper>

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import THEME from "../constants/theme";
-import { fetchGoals, createGoal } from "../api/goalAPI";
-import { GoalCard } from "../components/Goals/Card";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import THEME from '../constants/theme';
+import { fetchGoals, createGoal } from '../api/goalAPI';
+import { GoalCard } from '../components/Goals/Card';
 
 interface Goal {
   id: number;
@@ -14,30 +14,32 @@ interface Goal {
 
 const GoalPage: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
-  const [newGoal, setNewGoal] = useState({ name: "", amount: 0, description: "" });
+  const [newGoal, setNewGoal] = useState({
+    name: '',
+    amount: 0,
+    description: '',
+  });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-    // useEffect 부분 수정
   useEffect(() => {
     const loadGoals = async () => {
       try {
         setLoading(true);
-        setError(null);
         const data = await fetchGoals();
-        // 목표가 2개 이상이면 첫 번째 목표만 설정
-        setGoals(data.slice(0, 1));
+        if (Array.isArray(data)) {
+          const validGoals = data.filter((goal) => goal && goal.id); // 유효성 검사
+          setGoals(validGoals.slice(0, 1));
+        }
       } catch (error) {
-        console.error("Error fetching goals:", error);
-        setError("API 연결에 실패하여 더미데이터를 표시합니다.");
+        console.error('Error fetching goals:', error);
         setGoals([
           {
             id: 1,
-            name: "자전거",
+            name: '자전거',
             amount: 500000,
-            description: "새로운 자전거 구매하기",
-            saved: 100000
-          }
+            description: '새로운 자전거 구매하기',
+            saved: 100000,
+          },
         ]);
       } finally {
         setLoading(false);
@@ -48,40 +50,46 @@ const GoalPage: React.FC = () => {
 
   const addGoal = async () => {
     if (goals.length >= 1) {
-      alert("목표는 하나만 등록할 수 있습니다.");
+      alert('목표는 하나만 등록할 수 있습니다.');
       return;
     }
 
-    if (!newGoal.name || !newGoal.amount) {
-      alert("목표 이름과 금액을 입력해주세요.");
+    if (!newGoal.name.trim() || newGoal.amount <= 0) {
+      alert('목표 이름을 입력하고 금액은 0보다 커야 합니다.');
       return;
     }
 
     try {
       const addedGoal = await createGoal({
-        goal_name: newGoal.name,
+        goal_name: newGoal.name.trim(),
         goal_value: newGoal.amount,
-        description: newGoal.description || "",
+        description: newGoal.description.trim() || '',
       });
-      setGoals((prev) => [...prev, addedGoal]);
-      setNewGoal({ name: "", amount: 0, description: "" });
+
+      if (addedGoal && addedGoal.id) {
+        setGoals((prev) => [...prev, addedGoal]);
+      } else {
+        throw new Error('Invalid goal data');
+      }
+
+      setNewGoal({ name: '', amount: 0, description: '' });
     } catch (error) {
-      console.error("Error adding goal:", error);
+      console.error('Error adding goal:', error);
+
       const dummyGoal = {
-        id: goals.length + 1,
-        name: newGoal.name,
+        id: new Date().getTime(),
+        name: newGoal.name.trim(),
         amount: newGoal.amount,
-        description: newGoal.description || "",
-        saved: 0
+        description: newGoal.description.trim() || '',
+        saved: 0,
       };
+
       setGoals((prev) => [...prev, dummyGoal]);
-      setNewGoal({ name: "", amount: 0, description: "" });
-      setError("API 연결에 실패하여 더미데이터를 표시합니다.");
     }
   };
 
   const handleCancel = (id: number) => {
-    const shouldCancel = window.confirm("목표를 진짜 취소하시겠습니까?");
+    const shouldCancel = window.confirm('목표를 진짜 취소하시겠습니까?');
     if (shouldCancel) {
       setGoals((prev) => prev.filter((goal) => goal.id !== id));
     }
@@ -95,7 +103,9 @@ const GoalPage: React.FC = () => {
       alert(`"${goal.name}" 목표를 완료했습니다!`);
       setGoals(goals.filter((g) => g.id !== id));
     } else {
-      const shouldCancel = window.confirm("목표 금액에 도달하지 못했습니다. 목표를 취소하시겠습니까?");
+      const shouldCancel = window.confirm(
+        '목표 금액에 도달하지 못했습니다. 목표를 취소하시겠습니까?'
+      );
       if (shouldCancel) {
         handleCancel(id);
       }
@@ -106,42 +116,49 @@ const GoalPage: React.FC = () => {
 
   return (
     <Container>
-      {error && <ErrorBanner>{error}</ErrorBanner>}
       <Title>목표 관리</Title>
 
       <InputWrapper>
-        <input
+        <Input
           type="text"
           placeholder="목표 이름"
           value={newGoal.name}
           onChange={(e) => setNewGoal({ ...newGoal, name: e.target.value })}
         />
-        <input
+        <Input
           type="number"
           placeholder="목표 금액"
-          value={newGoal.amount || ""}
-          onChange={(e) => setNewGoal({ ...newGoal, amount: Number(e.target.value) })}
+          value={newGoal.amount || ''}
+          onChange={(e) =>
+            setNewGoal({ ...newGoal, amount: Number(e.target.value) })
+          }
         />
-        <input
+        <Input
           type="text"
           placeholder="목표 설명"
-          value={newGoal.description || ""}
-          onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
+          value={newGoal.description || ''}
+          onChange={(e) =>
+            setNewGoal({ ...newGoal, description: e.target.value })
+          }
         />
         <AddGoalButton onClick={addGoal}>추가하기</AddGoalButton>
       </InputWrapper>
 
       {goals.length > 0 ? (
-        goals.map((goal) => (
-          <GoalCard
-            key={goal.id}
-            {...goal}
-            onComplete={() => handleComplete(goal.id)}
-            onCancel={() => handleCancel(goal.id)}
-          />
-        ))
+        goals
+          .filter((goal) => goal && goal.id)
+          .map((goal) => (
+            <GoalCard
+              key={goal.id}
+              {...goal}
+              onComplete={() => handleComplete(goal.id)}
+              onCancel={() => handleCancel(goal.id)}
+            />
+          ))
       ) : (
-        <EmptyMessage>현재 목표가 없습니다. 새 목표를 추가해보세요!</EmptyMessage>
+        <EmptyMessage>
+          현재 목표가 없습니다. 새 목표를 추가해보세요!
+        </EmptyMessage>
       )}
     </Container>
   );
@@ -152,16 +169,6 @@ const LoadingMessage = styled.div`
   color: ${THEME.colors.text};
   margin: 2rem 0;
   font-size: 1rem;
-`;
-
-const ErrorBanner = styled.div`
-  background: rgba(236, 193, 215, 0.1);
-  color: ${THEME.colors.accent};
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 16px;
 `;
 
 const Container = styled.div`
@@ -187,17 +194,17 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+`;
 
-  input {
-    padding: 8px 10px;
-    font-size: 14px;
-    border: 1px solid ${THEME.colors.accent};
-    border-radius: 4px;
-    background: ${THEME.colors.background};
-    color: ${THEME.colors.text};
-    outline: none;
-    height: 40px;
-  }
+const Input = styled.input`
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid ${THEME.colors.accent};
+  border-radius: 4px;
+  background: ${THEME.colors.background};
+  color: ${THEME.colors.text};
+  outline: none;
+  height: 40px;
 `;
 
 const AddGoalButton = styled.button`

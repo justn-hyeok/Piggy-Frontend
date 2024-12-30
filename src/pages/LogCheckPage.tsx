@@ -24,8 +24,7 @@ const LogCheckPage: React.FC = () => {
         setLogs(data);
       } catch (err) {
         console.error('로그 로딩 실패:', err);
-        setError('로그 데이터를 불러오는 데 실패했습니다. 더미데이터를 표시합니다.');
-        // 더미데이터 설정
+        setError('API 연결에 실패하여 더미데이터를 표시합니다.');
         setLogs([
           {
             id: 1,
