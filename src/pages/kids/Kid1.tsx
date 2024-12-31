@@ -21,9 +21,24 @@ const Kid1: React.FC = () => {
         const goals = await fetchGoals();
         if (goals.length > 0) {
           setGoalData(goals[0]); // 첫 번째 목표 데이터를 사용
+        } else {
+          setGoalData({
+            id: 1,
+            name: '더미 목표',
+            description: '더미 설명',
+            amount: 100000,
+            saved: 50000,
+          });
         }
       } catch (error) {
         console.error('Error fetching goal data:', error);
+        setGoalData({
+          id: 1,
+          name: '더미 목표',
+          description: '더미 설명',
+          amount: 100000,
+          saved: 50000,
+        });
       }
     };
 

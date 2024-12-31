@@ -11,6 +11,14 @@ interface GoalData {
   saved: number;
 }
 
+const dummyData: GoalData = {
+  id: 1,
+  name: 'Dummy Goal',
+  description: 'This is a dummy goal description',
+  amount: 100000,
+  saved: 50000,
+};
+
 const Kid2: React.FC = () => {
   const [goalData, setGoalData] = useState<GoalData | null>(null);
   const navigate = useNavigate();
@@ -24,6 +32,7 @@ const Kid2: React.FC = () => {
         }
       } catch (error) {
         console.error('Error fetching goal data:', error);
+        setGoalData(dummyData); // 에러 발생 시 더미 데이터 사용
       }
     };
 
