@@ -13,7 +13,8 @@ const AppContent = () => {
   return (
     <AppContainer>
       {/* 헤더와 푸터를 Kid 페이지에서 제외 */}
-      {!isKidPage && <Header />}
+      {!isKidPage && <Header />} 
+      <Header />
       <MainContent>
         <AppRoutes />
       </MainContent>
