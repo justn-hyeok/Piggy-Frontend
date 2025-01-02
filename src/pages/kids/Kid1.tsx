@@ -20,7 +20,7 @@ const Kid1: React.FC = () => {
       try {
         const goals = await fetchGoals();
         if (goals.length > 0) {
-          setGoalData(goals[0]); // 첫 번째 목표 데이터를 사용
+          setGoalData(goals[0]);
         } else {
           setGoalData({
             id: 1,

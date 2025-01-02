@@ -86,7 +86,7 @@ const LogCheckPage: React.FC = () => {
             </LogItem>
           ))}
         </LogList>
-      ) : (
+      ): (
         <EmptyMessage>저축 기록이 없습니다.</EmptyMessage>
       )}
     </Container>
