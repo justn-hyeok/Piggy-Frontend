@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  /* FIXME: max-width 값을 동적으로 변경할 수 있도록 리팩토링 필요 */
 }
 
 .logo {
@@ -10,6 +11,7 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+  /* TODO: 로고 크기를 반응형으로 조정 */
 }
 
 .logo:hover {
@@ -32,13 +34,16 @@
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+    /* FIXME: 애니메이션 속도를 사용자 설정으로 변경 가능하도록 추가 */
   }
 }
 
 .card {
   padding: 2em;
+  /* TODO: 카드 스타일을 테마와 통합 */
 }
 
 .read-the-docs {
   color: #888;
+  /* FIXME: 색상을 테마 변수로 변경 */
 }

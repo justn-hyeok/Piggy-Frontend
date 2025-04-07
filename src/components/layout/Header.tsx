@@ -30,12 +30,14 @@ const Container = styled.header`
     padding: 1.4rem;
     background-color: #000000;
     color: #000000;
+    /* FIXME: Header의 색상과 레이아웃을 더 직관적으로 변경 */
 `;
 
 const Logo = styled.img`
     width: 100px;
     height: auto;
     cursor: pointer;
+    /* TODO: 로고 크기를 반응형으로 조정 */
 `;
 
 const Nav = styled.nav`
@@ -50,4 +52,5 @@ const NavLink = styled.div`
     padding-left: 1.2rem;
     padding-right: 1.2rem;
     cursor: pointer;
+    /* FIXME: 네비게이션 링크의 hover 스타일 추가 */
 `;

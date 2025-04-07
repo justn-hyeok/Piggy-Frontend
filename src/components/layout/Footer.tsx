@@ -4,7 +4,7 @@ import theme from '../../constants/theme';
 const Footer = () => {
     return (
         <Container>
-            
+            {/* TODO: Footer에 실제 콘텐츠 추가 */}
         </Container>
     );
 };
@@ -19,4 +19,5 @@ const Container = styled.footer`
     background-color: #000000;
     color: ${theme.colors.text};
     text-align: center; 
+    /* FIXME: Footer 스타일을 반응형으로 개선 */
 `;
