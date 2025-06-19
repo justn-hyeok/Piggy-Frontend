@@ -5,7 +5,7 @@ export interface Goal {
     amount: number;
     saved: number;
   }
-  
+
   export interface NewGoal {
     name: string;
     description: string;
